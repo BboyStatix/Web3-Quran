@@ -1,5 +1,6 @@
 # quran-nft-demo
 Quran app that pulls verses from an ethereum smart contract instead of a centralised database.
+The smart contract was created by IslamiCity https://www.islamicity.org/81783/islamicity-preserves-quran-as-nfts-on-the-blockchain
 
 This template should help get you started developing with Vue 3 in Vite.
 
