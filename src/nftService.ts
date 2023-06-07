@@ -410,7 +410,7 @@ export default class NFTService {
     return await this.contract.totalSupply();
   }
 
-  async getTokenByIndex(index: ethers.BigNumberish): Promise<number> {
-    return await this.contract.tokenByIndex(index);
+  async getTokenURI(index: ethers.BigNumberish): Promise<string> {
+    return await this.contract.tokenURI(index);
   }
 }
