@@ -1,4 +1,6 @@
 # Web3 Quran
+![Web3 Quran demo video](web3-quran-demo.gif)
+
 Quran dApp that pulls verses from an ethereum [smart contract](https://etherscan.io/address/0x5bfeae4450ef5a4d86a564a606da66dde5d18d34) created by [IslamiCity](https://www.islamicity.org/81783/islamicity-preserves-quran-as-nfts-on-the-blockchain).
 
 To be clear the smart contract does not store the verses itself but rather the IPFS addresses of the verses(e.g. ipfs://bafybeicaqixczxfovc3weatyrakvnjwv3zsgjrblmdt4dseba2myzyioni/2.json) so we have to fetch the verses from IPFS.
