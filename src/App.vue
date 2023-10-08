@@ -4,7 +4,7 @@ import QuranNFTList from "./components/QuranNFTList.vue";
 
 <template>
   <header>
-    <h1>Qur'an NFTs</h1>
+    <h1>Web3 Quran</h1>
   </header>
   <main>
     <QuranNFTList />
