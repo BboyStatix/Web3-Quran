@@ -1,14 +1,32 @@
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import nftService from "../nftService";
 
-const VERSES_PER_PAGE = 7;
+const VERSES_PER_PAGE = 10;
 
 const NFTService = new nftService();
 
-const totalQuranVerses = ref(0);
+const currentPage = ref(1)
+
+const totalQuranVerses = ref<number>(0);
 
 const verses = reactive(new Array(VERSES_PER_PAGE));
+
+const totalPages = computed(() => {
+  return Math.ceil(totalQuranVerses.value / VERSES_PER_PAGE)
+})
+
+onMounted(async () => {
+  totalQuranVerses.value = await NFTService.getTotalSupply();
+  fetchVerses(currentPage.value)
+});
+
+const fetchVerses = async (currentPage: number) => {
+  const startIdx = (currentPage - 1) * VERSES_PER_PAGE
+  for (let i = startIdx; i < startIdx + VERSES_PER_PAGE; i++) {
+    fetchVerse(i + 1).then(response => verses[i] = response);
+  }
+}
 
 const fetchVerse = async (verseNo: number) => {
   let tokenIPFSURI: string;
@@ -34,23 +52,17 @@ const fetchVerse = async (verseNo: number) => {
     throw e;
   }
 };
-
-onMounted(async () => {
-  totalQuranVerses.value = await NFTService.getTotalSupply();
-
-  for (let i = 1; i <= VERSES_PER_PAGE; i++) {
-    const verse = await fetchVerse(i);
-    verses[i] = verse;
-  }
-});
 </script>
 
 <template>
-  <div v-for="verse in verses">
-    <div v-if="verse">
-      {{ verse.arabic }}
+  <div>
+    <div v-for="verse in verses">
+      <div v-if="verse" style="margin-top: 1rem;">
+        {{ verse.arabic }}
+      </div>
     </div>
+    <br />
+    <div>Showing Verses 1-{{ VERSES_PER_PAGE }} / {{ totalQuranVerses }}</div>
+    <div>Page {{ currentPage }} of {{ totalPages }}</div>
   </div>
-  <br />
-  <div>Showing Verses 1-{{ VERSES_PER_PAGE }} / {{ totalQuranVerses }}</div>
 </template>
