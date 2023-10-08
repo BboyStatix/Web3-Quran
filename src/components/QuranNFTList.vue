@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import nftService from "../nftService";
 
 const VERSES_PER_PAGE = 10;
@@ -12,14 +12,16 @@ const totalQuranVerses = ref<number>(0);
 
 const verses = reactive(new Array(VERSES_PER_PAGE));
 
-const totalPages = computed(() => {
-  return Math.ceil(totalQuranVerses.value / VERSES_PER_PAGE)
-})
-
 onMounted(async () => {
   totalQuranVerses.value = await NFTService.getTotalSupply();
   fetchVerses(currentPage.value)
 });
+
+watch(currentPage, async (newPage, oldPage) => {
+  if (newPage && newPage !== oldPage) {
+    fetchVerses(newPage)
+  }
+})
 
 const fetchVerses = async (currentPage: number) => {
   const startIdx = (currentPage - 1) * VERSES_PER_PAGE
@@ -56,13 +58,15 @@ const fetchVerse = async (verseNo: number) => {
 
 <template>
   <div>
-    <div v-for="verse in verses">
-      <div v-if="verse" style="margin-top: 1rem;">
+    <div v-for="verse in verses" style="margin-top: 1rem;font-size: 1.5rem;">
+      <div v-if="verse">
         {{ verse.arabic }}
       </div>
     </div>
     <br />
-    <div>Showing Verses 1-{{ VERSES_PER_PAGE }} / {{ totalQuranVerses }}</div>
-    <div>Page {{ currentPage }} of {{ totalPages }}</div>
+    <div>Showing Verses {{ (currentPage - 1) * VERSES_PER_PAGE + 1 }} - {{ currentPage * VERSES_PER_PAGE }} / {{
+      totalQuranVerses }}
+    </div>
+    <button type="button" style="margin-top: 12px;" @click="currentPage = currentPage + 1">Load more</button>
   </div>
 </template>
