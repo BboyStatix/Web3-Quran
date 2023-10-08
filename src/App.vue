@@ -3,7 +3,7 @@ import QuranNFTList from "./components/QuranNFTList.vue";
 </script>
 
 <template>
-  <header style="margin-top:24px;">
+  <header>
     <img src="/favicon.ico" />
     <h1>Web3 Quran</h1>
   </header>
